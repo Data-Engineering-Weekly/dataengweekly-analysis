@@ -2,26 +2,40 @@ import json
 import os
 import streamlit_wordcloud as wordcloud
 import streamlit as st
+import pandas as pd
 
 
-def load_json(filename) -> dict:
-    file = os.path.dirname(os.path.abspath(__file__)) + '/data/' + filename + ".json"
-    json_keywords = open(file, 'r')
+def get_path(filename: str) -> str:
+    return os.path.dirname(os.path.abspath(__file__)) + '/data/' + filename + ".json"
+
+
+def load_data(filename) -> dict:
+    json_keywords = open(get_path(filename), 'r')
     data = json_keywords.read()
     json_keywords.close()
-    return json.loads(data)
+    return data
 
 
-def plot(file: str):
-    plot_json = load_json(file)
+def format_dict(data):
+    json_dict = json.loads(data)
     word_bags = []
-    for key in plot_json:
-        value = {"text": key, "value": plot_json[key]}
+    for key in json_dict:
+        value = {"text": key, "value": json_dict[key]}
         word_bags.append(value)
+    return word_bags
+
+
+def plot(file: str, width: str = None, height: str = None):
+    data = load_data(file)
+    word_bags = format_dict(data)
 
     wordcloud.visualize(word_bags, tooltip_data_fields={
         'text': 'Keywords', 'value': 'Total occurrences'
-    }, per_word_coloring=False, palette='coolwarm')
+    }, per_word_coloring=False, palette='coolwarm', width=width, height=height)
+
+    st.markdown("### Data Table")
+    df = pd.DataFrame.from_dict(word_bags).sort_values(by=['value'], ascending=False)
+    st.write(df)
 
 
 if __name__ == '__main__':
@@ -45,23 +59,25 @@ if __name__ == '__main__':
             If free text path combined and considered as Independent blog.
         """)
 
-        domain_extractor_code = """
-        result: dict[str, int] = dict()
-        for url in urls:
-            parsed_url = urlparse(url)
-            domain = parsed_url.netloc
-            if "medium" in domain:
-                domain = parsed_url.path.strip('/').split('/')[0].replace('-', ' ')
-    
-            domain = domain.lower()
-            if domain in result:
-                result[domain] += 1
-            else:
-                result[domain] = 1
-        """
-        st.code(domain_extractor_code, language='python')
-
         plot('domain_extractor')
+
+        st.markdown("## Domain Extractor Code")
+
+        domain_extractor_code = """
+                result: dict[str, int] = dict()
+                for url in urls:
+                    parsed_url = urlparse(url)
+                    domain = parsed_url.netloc
+                    if "medium" in domain:
+                        domain = parsed_url.path.strip('/').split('/')[0].replace('-', ' ')
+
+                    domain = domain.lower()
+                    if domain in result:
+                        result[domain] += 1
+                    else:
+                        result[domain] = 1
+                """
+        st.code(domain_extractor_code, language='python')
 
     if url_analytics_check:
         st.markdown("""
@@ -78,14 +94,6 @@ if __name__ == '__main__':
             3. Extract the last part of the URL
         """)
 
-        url_extractor_code = '''
-        def extract(self, url: str) -> str:
-            splitter = url.strip('/').split('/')
-            return splitter[len(splitter) - 1].replace('-', ' ')
-        '''
-
-        st.code(url_extractor_code, language='python')
-
         st.markdown("""
             ### 1 Gram:
         """)
@@ -94,7 +102,17 @@ if __name__ == '__main__':
         st.markdown("""
                 ### 2 Gram:
             """)
-        plot('url_extractor2')
+        plot('url_extractor2',  width='100%', height='600px')
+
+        st.markdown("## URL Extractor Code")
+
+        url_extractor_code = '''
+                def extract(self, url: str) -> str:
+                    splitter = url.strip('/').split('/')
+                    return splitter[len(splitter) - 1].replace('-', ' ')
+                '''
+
+        st.code(url_extractor_code, language='python')
 
     if content_analytics_check:
         st.markdown("""
@@ -112,35 +130,6 @@ if __name__ == '__main__':
                     4. Run through NGram analytics for the content
                 """)
 
-        content_extractor_code = """
-            def extract(self, url: str) -> str:
-                response = requests.get(url)
-                html_page = response.content
-                soup = BeautifulSoup(html_page, 'html.parser')
-                text = soup.find_all(text=True)
-                output = ''
-                deny_list = [
-                    '[document]',
-                    'noscript',
-                    'header',
-                    'html',
-                    'meta',
-                    'head',
-                    'input',
-                    'script',
-                    'style',
-                    'link',
-                    'button',
-                    'img',
-                ]
-        
-                for t in text:
-                    if t.parent.name not in deny_list:
-                        output += '{} '.format(t)
-                return output
-        """
-        st.code(content_extractor_code, language='python')
-
         st.markdown("""
                    ### 1 Gram:
                """)
@@ -154,4 +143,35 @@ if __name__ == '__main__':
         st.markdown("""
                          ### 3 Gram:
                     """)
-        plot('content_extractor3')
+        plot('content_extractor3', width='100%', height='1500px')
+
+        st.markdown("## Content Extractor Code")
+
+        content_extractor_code = """
+                    def extract(self, url: str) -> str:
+                        response = requests.get(url)
+                        html_page = response.content
+                        soup = BeautifulSoup(html_page, 'html.parser')
+                        text = soup.find_all(text=True)
+                        output = ''
+                        deny_list = [
+                            '[document]',
+                            'noscript',
+                            'header',
+                            'html',
+                            'meta',
+                            'head',
+                            'input',
+                            'script',
+                            'style',
+                            'link',
+                            'button',
+                            'img',
+                        ]
+
+                        for t in text:
+                            if t.parent.name not in deny_list:
+                                output += '{} '.format(t)
+                        return output
+                """
+        st.code(content_extractor_code, language='python')
