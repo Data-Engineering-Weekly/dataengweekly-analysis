@@ -49,6 +49,20 @@ if __name__ == '__main__':
     url_analytics_check = st.sidebar.checkbox('URL Analytics', value=False, key=1)
     content_analytics_check = st.sidebar.checkbox('Blog Content Analytics', value=False, key=2)
 
+    st.sidebar.info("Connect with us!!!")
+
+    st.sidebar.markdown("""
+    
+        **Author:** 
+        
+        Ananth Packkildurai
+        
+        
+        **Source Code:** 
+        
+        [https://github.com/ananthdurai/dataengweekly-analysis](https://github.com/ananthdurai/dataengweekly-analysis)
+    """)
+
     if domain_analytics_check:
         st.markdown("""
             ## Domain Analytics:
@@ -102,7 +116,7 @@ if __name__ == '__main__':
         st.markdown("""
                 ### 2 Gram:
             """)
-        plot('url_extractor2',  width='100%', height='600px')
+        plot('url_extractor2', width='100%', height='600px')
 
         st.markdown("## URL Extractor Code")
 
