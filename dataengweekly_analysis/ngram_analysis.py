@@ -22,6 +22,11 @@ def is_valid(url: str) -> bool:
 
 
 def get_all_links(url):
+    """
+    Extract all the a href links from the given url.
+    :param url:
+    :return:
+    """
     urls = set()
     domain_name = urlparse(url).netloc
     soup = BeautifulSoup(requests.get(url).content, "html.parser")
@@ -69,6 +74,11 @@ def get_all_links(url):
 
 
 def weekly_links() -> set:
+    """
+    The pattern for weekly links are very predictable. Let's create a list of weekly links.
+    No complex scrapping required here.
+    :return:
+    """
     editions = set()
     for edition in range(24, 66):
         url = 'https://www.dataengineeringweekly.com/p/data-engineering-weekly-{edition}'.format(edition=edition)
@@ -80,6 +90,14 @@ def weekly_links() -> set:
 
 
 def extract_keywords(url: str, ngram_size: int, num_of_keywords: int, extractor: Extractor):
+    """
+    Extract the keywords from the content
+    :param url: url to extract the keywords
+    :param ngram_size: size of the ngram. range 1 to 3
+    :param num_of_keywords: Total number of keywords to return
+    :param extractor: The extraction strategy to use. The current strategies are URLExtractor & ContentExtractor
+    :return: list of keywords extracted
+    """
     language = "en"
     max_ngram_size = ngram_size
     deduplication_threshold = 0.9
@@ -101,6 +119,14 @@ def extract_keywords(url: str, ngram_size: int, num_of_keywords: int, extractor:
 
 
 async def run_ngram_analysis(urls: list[str], ngram_size: int, num_of_keywords: int, extractor: Extractor):
+    """
+    Run the N-Gram analysis and format the keywords in a dictionary format
+    :param urls: url to extract the keywords
+    :param ngram_size: size of the ngram. range 1 to 3
+    :param num_of_keywords: Total number of keywords to return
+    :param extractor: The extraction strategy to use. The current strategies are URLExtractor & ContentExtractor
+    :return: None
+    """
     url_stream = stream.iterate(urls)
     extract = stream.map(url_stream, (lambda url: extract_keywords(url, ngram_size, num_of_keywords, extractor)),
                          ordered=False, task_limit=20)
@@ -122,8 +148,8 @@ async def run_ngram_analysis(urls: list[str], ngram_size: int, num_of_keywords: 
         if keyword_dict[key] >= 3:
             result[key] = keyword_dict[key]
 
+    # Write the output into a JSON file
     filename = os.path.dirname(os.path.abspath(__file__)) + '/data/' + extractor.get_name() + str(ngram_size) + ".json"
-
     with open(filename, 'w') as file:
         file.write(json.dumps(result))
         file.flush()
@@ -131,6 +157,11 @@ async def run_ngram_analysis(urls: list[str], ngram_size: int, num_of_keywords: 
 
 
 async def execute(urls: list[str]):
+    """
+    Execute the N-Gram analysis for the list of urls
+    :param urls: list of urls
+    :return: None
+    """
     analysis = [run_ngram_analysis(urls=urls, ngram_size=3, num_of_keywords=5, extractor=ContentExtractor()),
                 run_ngram_analysis(urls=urls, ngram_size=2, num_of_keywords=5, extractor=ContentExtractor()),
                 run_ngram_analysis(urls=urls, ngram_size=1, num_of_keywords=5, extractor=ContentExtractor()),
@@ -140,11 +171,16 @@ async def execute(urls: list[str]):
 
 
 def domain_names(urls: list[str]):
+    """
+    Run domain name analysis on a given url
+    :param urls: list of urls
+    :return: None
+    """
     result: dict[str, int] = dict()
     for url in urls:
         parsed_url = urlparse(url)
         domain = parsed_url.netloc
-        if "medium" in domain:
+        if "medium" in domain:  # If the blog published in medium, get the next first part of the URL path
             domain = parsed_url.path.strip('/').split('/')[0].replace('-', ' ')
 
         domain = domain.lower()
@@ -162,14 +198,19 @@ def domain_names(urls: list[str]):
 
 if __name__ == '__main__':
 
+    # step 1: Get all the data engineering weekly links
     weekly_links = weekly_links()
+
+    # step 2: For each data engineering weekly, extract all the links shared in each edition.
     article_links = list[str]()
     for weekly_link in weekly_links:
         for article_link in get_all_links(weekly_link):
             article_links.append(article_link)
 
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(execute(article_links))
-    # loop.close()
-
+    # step 3: Run domain name analysis
     domain_names(article_links)
+
+    # step 4: Run N-Gram analysis
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(execute(article_links))
+    loop.close()
