@@ -1,41 +1,47 @@
 import json
-import os
-import streamlit_wordcloud as wordcloud
 import streamlit as st
 import pandas as pd
 
-
-def get_path(filename: str) -> str:
-    return os.path.dirname(os.path.abspath(__file__)) + '/data/' + filename + ".json"
+from dataengweekly_analysis.data_path import get_path
 
 
 def load_data(filename) -> dict:
-    json_keywords = open(get_path(filename), 'r')
-    data = json_keywords.read()
-    json_keywords.close()
+    json_data = open(get_path(filename), 'r')
+    data = json_data.read()
+    json_data.close()
     return data
 
 
-def format_dict(data):
+def format_country_stats(data):
     json_dict = json.loads(data)
-    word_bags = []
+    country_stats = []
     for key in json_dict:
-        value = {"text": key, "value": json_dict[key]}
-        word_bags.append(value)
-    return word_bags
+        country_stats.append({"Country": key, "Readers Percentage": float(json_dict[key])})
+    return country_stats
 
 
-def plot(file: str, width: str = None, height: str = None):
-    data = load_data(file)
-    word_bags = format_dict(data)
+def format_top3_links(data):
+    json_dict = json.loads(data)
+    top3_links = []
+    for links in json_dict:
+        top3_links.append({"Edition": links["edition"], "Title": links['title'], "URL": links['short_link']})
+    return top3_links
 
-    wordcloud.visualize(word_bags, tooltip_data_fields={
-        'text': 'Keywords', 'value': 'Total occurrences'
-    }, per_word_coloring=False, palette='coolwarm', width=width, height=height)
 
-    st.markdown("### Data Table")
-    df = pd.DataFrame.from_dict(word_bags).sort_values(by=['value'], ascending=False)
-    st.write(df)
+def plot_top3_links():
+    data = format_top3_links(load_data('top3_links'))
+    st.markdown("## DEW Top 3 Most Viewed Links Per Edition")
+    df = pd.DataFrame.from_dict(data)
+    st.table(df)
+
+
+def plot_country_stats():
+    data = format_country_stats(load_data('country_metrics'))
+    st.markdown("## DEW Viewers Distribution Percentage")
+    df = pd.DataFrame.from_dict(data) \
+        .sort_values(by=['Readers Percentage'], ascending=False)
+    df['Readers Percentage'] = df['Readers Percentage'].map(lambda x: str(round(x, 2)) + '%')
+    st.table(df.reset_index(drop=True))
 
 
 if __name__ == '__main__':
@@ -43,149 +49,23 @@ if __name__ == '__main__':
 
     st.title("Data Engineering Weekly Analytics")
 
-    st.sidebar.title("Select the type of analytics you want to see")
+    st.sidebar.title("Select Analytics Type")
 
-    domain_analytics_check = st.sidebar.checkbox('Domain Name Analytics', value=True, key=3)
-    url_analytics_check = st.sidebar.checkbox('URL Analytics', value=False, key=1)
-    content_analytics_check = st.sidebar.checkbox('Blog Content Analytics', value=False, key=2)
+    geo_analytics_check = st.sidebar.checkbox('Geography Distribution of Readers', value=True, key=1)
+    url_analytics_check = st.sidebar.checkbox('Top 3 Links', value=False, key=2)
 
     st.sidebar.info("Connect with us!!!")
 
     st.sidebar.markdown("""
     
-        **Author:** 
+        **Author:** Data Engineering Weekly
+
+        Twitter: [@data_weekly](https://twitter.com/data_weekly)
         
-        Ananth Packkildurai
-        
-        
-        **Source Code:** 
-        
-        [https://github.com/ananthdurai/dataengweekly-analysis](https://github.com/ananthdurai/dataengweekly-analysis)
     """)
 
-    if domain_analytics_check:
-        st.markdown("""
-            ## Domain Analytics:
-            
-            ### How it is done?
-            The analysis is simply extracting the domain name from the URL. Most of the engineering blogs hosted on medium.com.
-            If the blog hosted on medium.com, we take the first part of the url path. 
-            If free text path combined and considered as Independent blog.
-        """)
-
-        plot('domain_extractor')
-
-        st.markdown("## Domain Extractor Code")
-
-        domain_extractor_code = """
-                result: dict[str, int] = dict()
-                for url in urls:
-                    parsed_url = urlparse(url)
-                    domain = parsed_url.netloc
-                    if "medium" in domain:
-                        domain = parsed_url.path.strip('/').split('/')[0].replace('-', ' ')
-
-                    domain = domain.lower()
-                    if domain in result:
-                        result[domain] += 1
-                    else:
-                        result[domain] = 1
-                """
-        st.code(domain_extractor_code, language='python')
+    if geo_analytics_check:
+        plot_country_stats()
 
     if url_analytics_check:
-        st.markdown("""
-            ## URL Analytics
-            
-            ### How it is done?
-            The URL NGram analytics is from observing the URL formation in all the articles shared in the data engineering weekly.
-            We noticed that the last part of the URL is usually a description of the articles. The logic for the URL analytics is
-            
-            1. Get all the data engineering weekly newsletter links
-            
-            2. For each data engineering weekly newsletter, extract all the links shared for that week.
-            
-            3. Extract the last part of the URL
-        """)
-
-        st.markdown("""
-            ### 1 Gram:
-        """)
-        plot('url_extractor1')
-
-        st.markdown("""
-                ### 2 Gram:
-            """)
-        plot('url_extractor2', width='100%', height='600px')
-
-        st.markdown("## URL Extractor Code")
-
-        url_extractor_code = '''
-                def extract(self, url: str) -> str:
-                    splitter = url.strip('/').split('/')
-                    return splitter[len(splitter) - 1].replace('-', ' ')
-                '''
-
-        st.code(url_extractor_code, language='python')
-
-    if content_analytics_check:
-        st.markdown("""
-                    ## Blog Content Analytics
-
-                    ### How it is done?
-                    The blog content analytics extract all the content of the articles, and run through NGram analytics. The logic for the Blog content analytics is
-                    
-                    1. Get all the data engineering weekly newsletter links
-
-                    2. For each data engineering weekly newsletter, extract all the links shared for that week.
-
-                    3. For all the blog url, extract the content from the html page and sanitize the content
-                    
-                    4. Run through NGram analytics for the content
-                """)
-
-        st.markdown("""
-                   ### 1 Gram:
-               """)
-        plot('content_extractor1')
-
-        st.markdown("""
-                       ### 2 Gram:
-                   """)
-        plot('content_extractor2')
-
-        st.markdown("""
-                         ### 3 Gram:
-                    """)
-        plot('content_extractor3', width='100%', height='1500px')
-
-        st.markdown("## Content Extractor Code")
-
-        content_extractor_code = """
-                    def extract(self, url: str) -> str:
-                        response = requests.get(url)
-                        html_page = response.content
-                        soup = BeautifulSoup(html_page, 'html.parser')
-                        text = soup.find_all(text=True)
-                        output = ''
-                        deny_list = [
-                            '[document]',
-                            'noscript',
-                            'header',
-                            'html',
-                            'meta',
-                            'head',
-                            'input',
-                            'script',
-                            'style',
-                            'link',
-                            'button',
-                            'img',
-                        ]
-
-                        for t in text:
-                            if t.parent.name not in deny_list:
-                                output += '{} '.format(t)
-                        return output
-                """
-        st.code(content_extractor_code, language='python')
+        plot_top3_links()
