@@ -1,8 +1,12 @@
 import json
+import os
+
 import streamlit as st
 import pandas as pd
 
-from dataengweekly_analysis.data_path import get_path
+
+def get_path(filename: str) -> str:
+    return os.path.dirname(os.path.abspath(__file__)) + '/data/' + filename + ".json"
 
 
 def load_data(filename) -> dict:
