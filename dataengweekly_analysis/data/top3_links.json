@@ -1,0 +1,146 @@
+[
+    {
+        "bitly_id": "bit.ly/3vbmeEC",
+        "short_link": "https://bit.ly/3vbmeEC",
+        "long_link": "https://medium.com/coriers/should-you-use-apache-airflow-e71c6cf7c0c4?utm_source=newsletter&utm_medium=email",
+        "title": "Should You Use Apache Airflow?. Why Data Engineers Love/Hate Airflow | by Ben Rogojan | SeattleDataGuy By SeattleDataGuy | Jul, 2022 | Medium",
+        "click_count": 321,
+        "edition": "DEW94"
+    },
+    {
+        "bitly_id": "bit.ly/3PQ2rm1",
+        "short_link": "https://bit.ly/3PQ2rm1",
+        "long_link": "https://datamonkeysite.com/2022/07/22/first-look-at-google-malloy/?utm_source=newsletter&utm_medium=email&utm_campaign=DEW94",
+        "title": "First Look at Google Malloy \u2013 Project Controls blog",
+        "click_count": 262,
+        "edition": "DEW94"
+    },
+    {
+        "bitly_id": "bit.ly/3PW34uB",
+        "short_link": "https://bit.ly/3PW34uB",
+        "long_link": "https://davidsj.substack.com/p/going-with-the-airflow-part-1?utm_source=newsletter&utm_medium=email&utm_campaign=DEW94",
+        "title": "Going with the Airflow - Part 1 - by David Jayatillake",
+        "click_count": 175,
+        "edition": "DEW94"
+    },
+    {
+        "bitly_id": "bit.ly/3zfa9AW",
+        "short_link": "https://bit.ly/3zfa9AW",
+        "long_link": "https://medium.com/shippeo-tech-blog/debezium-to-snowflake-lessons-learned-building-data-replication-in-production-a5430a9fe85b?utm_source=newsletter&utm_medium=email&utm_campaign=DEW93",
+        "title": "Debezium to Snowflake: Lessons learned building data replication in production | by Omar Ghalawinji | Shippeo Tech Blog | Jun, 2022 | Medium",
+        "click_count": 648,
+        "edition": "DEW93"
+    },
+    {
+        "bitly_id": "bit.ly/3uWD8qm",
+        "short_link": "https://bit.ly/3uWD8qm",
+        "long_link": "https://medium.com/walmartglobaltech/databathing-a-framework-for-transferring-the-query-to-spark-code-484957a7e049?utm_source=newsletter&utm_medium=email&utm_campaign=DEW93",
+        "title": "DataBathing \u2014 A Framework for Transferring the Query to Spark Code | by Jiazhen Zhu | Walmart Global Tech Blog | Jun, 2022 | Medium",
+        "click_count": 308,
+        "edition": "DEW93"
+    },
+    {
+        "bitly_id": "bit.ly/3yP7NXZ",
+        "short_link": "https://bit.ly/3yP7NXZ",
+        "long_link": "https://medium.com/@profjoeyg/how-machine-learning-became-useful-5732c3419c81?utm_source=newsletter&utm_medium=email&utm_campaign=DEW93",
+        "title": "How Machine Learning Became Useful  | Medium",
+        "click_count": 174,
+        "edition": "DEW93"
+    },
+    {
+        "bitly_id": "bit.ly/3RpuN8w",
+        "short_link": "https://bit.ly/3RpuN8w",
+        "long_link": "https://blog.devgenius.io/5-best-open-source-data-lineage-tools-in-2022-f8ef39a7d5f6?utm_source=newsletter&utm_medium=email&utm_campaign=DEW92",
+        "title": "5 Best Open Source Data Lineage Tools in 2022",
+        "click_count": 436,
+        "edition": "DEW92"
+    },
+    {
+        "bitly_id": "bit.ly/3PgvpuZ",
+        "short_link": "https://bit.ly/3PgvpuZ",
+        "long_link": "https://arxiv.org/pdf/2205.02302.pdf?utm_source=newsletter&utm_medium=email&utm_campaign=DEW92",
+        "title": "Machine Learning Operations (MLOps):  Overview, Definition, and Architecture ",
+        "click_count": 368,
+        "edition": "DEW92"
+    },
+    {
+        "bitly_id": "bit.ly/3yvOmDj",
+        "short_link": "https://bit.ly/3yvOmDj",
+        "long_link": "https://databricks.com/blog/2022/07/07/introducing-spark-connect-the-power-of-apache-spark-everywhere.html?utm_source=newsletter&utm_medium=email&utm_campaign=DEW92",
+        "title": "Introducing Spark Connect - The Power of Apache Spark, Everywhere - The Databricks Blog",
+        "click_count": 337,
+        "edition": "DEW92"
+    },
+    {
+        "bitly_id": "bit.ly/3RaF8ES",
+        "short_link": "https://bit.ly/3RaF8ES",
+        "long_link": "https://medium.com/@matt_weingarten/data-ai-summit-takeaways-part-i-ed1da1aa8125?utm_source=newsletter&utm_medium=email&utm_campaign=DEW91",
+        "title": "Data & AI Summit Takeaways: Part I | by Matt Weingarten | Jun, 2022 | Medium",
+        "click_count": 324,
+        "edition": "DEW91"
+    },
+    {
+        "bitly_id": "bit.ly/3nV9b6t",
+        "short_link": "https://bit.ly/3nV9b6t",
+        "long_link": "https://towardsdatascience.com/things-i-wish-i-knew-when-i-was-building-a-data-team-efcb43591204?utm_source=newsletter&utm_medium=email&utm_campaign=DEW91",
+        "title": "Things I Wish I Knew When I Was Building a Data Team",
+        "click_count": 311,
+        "edition": "DEW91"
+    },
+    {
+        "bitly_id": "bit.ly/3Idi8Be",
+        "short_link": "https://bit.ly/3Idi8Be",
+        "long_link": "https://airflow.apache.org/blog/airflow-survey-2022/?utm_source=newsletter&utm_medium=email&utm_campaign=DEW91",
+        "title": "Airflow Survey 2022 | Apache Airflow",
+        "click_count": 234,
+        "edition": "DEW91"
+    },
+    {
+        "bitly_id": "bit.ly/3u33d6C",
+        "short_link": "https://bit.ly/3u33d6C",
+        "long_link": "https://www.holistics.io/blog/scd-cloud-data-warehouse/?utm_source=newsletter&utm_medium=email&utm_campaign=DEW90",
+        "title": "Slowly Changing Dimensions (SCDs) In The Age of The Cloud Data Warehouse",
+        "click_count": 92,
+        "edition": "DEW90"
+    },
+    {
+        "bitly_id": "bit.ly/3QNlLBQ",
+        "short_link": "https://bit.ly/3QNlLBQ",
+        "long_link": "https://lakefs.io/the-state-of-data-engineering-2022/?utm_source=newsletter&utm_medium=email&utm_campaign=DEW90",
+        "title": "The State of Data Engineering 2022 - LakeFS",
+        "click_count": 83,
+        "edition": "DEW90"
+    },
+    {
+        "bitly_id": "bit.ly/39RAVFo",
+        "short_link": "https://bit.ly/39RAVFo",
+        "long_link": "https://www.getdbt.com/blog/rebuilding-dbt-scheduler/?utm_source=newsletter&utm_medium=email&utm_campaign=DEW90",
+        "title": "How We Rebuilt the dbt Cloud Scheduler",
+        "click_count": 49,
+        "edition": "DEW90"
+    },
+    {
+        "bitly_id": "bit.ly/3QIwFc6",
+        "short_link": "https://bit.ly/3QIwFc6",
+        "long_link": "https://engineering.linkedin.com/blog/2022/towards-data-quality-management-at-linkedin?utm_source=newsletter&utm_medium=email&utm_campaign=DEW89",
+        "title": "Towards data quality management at LinkedIn | LinkedIn Engineering",
+        "click_count": 43,
+        "edition": "DEW89"
+    },
+    {
+        "bitly_id": "zln.do/3Olpcxs",
+        "short_link": "https://zln.do/3Olpcxs",
+        "long_link": "https://engineering.zalando.com/posts/2022/06/accelerate-apache-airflow-testing-through-dag-versioning.html?utm_source=newsletter&utm_medium=email&utm_campaign=DEW89",
+        "title": "Accelerate testing in Apache Airflow through DAG versioning",
+        "click_count": 27,
+        "edition": "DEW89"
+    },
+    {
+        "bitly_id": "bit.ly/3OmPMHb",
+        "short_link": "https://bit.ly/3OmPMHb",
+        "long_link": "https://dataproducts.substack.com/p/the-death-of-data-modeling-pt-1?utm_source=newsletter&utm_medium=email&utm_campaign=DEW89",
+        "title": "The Death of Data Modeling - Pt. 1 - by Chad Sanderson",
+        "click_count": 23,
+        "edition": "DEW89"
+    }
+]
