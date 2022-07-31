@@ -68,7 +68,8 @@ if __name__ == '__main__':
         
     """)
 
-    st.markdown("### Total Subscribers as of July-31-2022: 9264")
+    st.markdown("### Total Subscribers(as of July-31-2022):")
+    st.markdown("#### 9264")
 
     if geo_analytics_check:
         plot_country_stats()
